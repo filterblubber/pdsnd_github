@@ -21,7 +21,7 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
-data_source = '.'
+data_source = './data'
 db_filename = 'bike_database.feather'
 db_file = join(data_source, db_filename)
 
