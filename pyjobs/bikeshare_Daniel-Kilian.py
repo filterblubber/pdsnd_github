@@ -105,16 +105,16 @@ def dict_question(data_dict):
             print('Contains not allowed characters:'
                   f' {set(check_for_false_input)}')
             continue
-        
+
         txt_split = sorted(map(int, set(txt.split())))
-        
+
         allowed_choises = [item 
                           for item in txt_split 
                           if item in keys]
         forbidden_choises = [item 
                             for item in txt_split 
                             if item not in keys]
-        
+
         # print(forbidden_choises, txt_split, keys)
         if len(forbidden_choises) == 0 and len(allowed_choises) > 0:
             return select_filter(data_dict, allowed_choises)
@@ -125,7 +125,7 @@ def dict_question(data_dict):
 def calc_time(start_time):
     duration = time() - start_time
     print(f"\nThis took {duration:.2F} seconds.")
-    
+
 
 def print_table(df, column):
     """
@@ -154,6 +154,9 @@ def print_table(df, column):
 
 
 def display_duration(duration):
+    """
+    Dispaly duration of bike rides.
+    """
     days_tmp, seconds = divmod(duration, 24*3600)
     years, days = divmod(days_tmp, 365)
     td_sum = timedelta(seconds=int(seconds))
@@ -164,7 +167,7 @@ def display_duration(duration):
         print(f'days: {days}, {td_sum} [hh:mm:ss]')
     else:
         print(f'{td_sum} [hh:mm:ss]')
-        
+
 
 def get_filters(test=False):
     """
@@ -184,13 +187,13 @@ def get_filters(test=False):
         selection_city = dict_question(dict_city)
         selection_months = dict_question(dict_months)
         selection_weekdays = dict_question(dict_weekdays)
-        
-        filter_dict = {'City':selection_city, 
-                         'month': selection_months, 
+
+        filter_dict = {'City':selection_city,
+                         'month': selection_months,
                          'dayofweek':selection_weekdays}
-    
+
         print(filter_dict)
-        
+
         print('*'*50)
     return filter_dict
 
@@ -251,7 +254,7 @@ def prepare_dataframe(data_source):
     df_w['Trip Duration'] = df_w['Trip Duration'].round(0).astype(int)
 
     all_df = [df_c, df_n, df_w]
-    
+
 
     df_all = pd.concat(all_df).reset_index(drop=True)
     
@@ -271,19 +274,20 @@ def prepare_dataframe(data_source):
     df_all['Birth Year'] = pd.to_numeric(df_all['Birth Year'].fillna(-1), 
                                             downcast='integer')
 
-    df_all['month'] = pd.to_numeric(df_all['Start Time'].dt.month, 
+    df_all['month'] = pd.to_numeric(df_all['Start Time'].dt.month,
                                   downcast='integer')
-    df_all['dayofweek'] = pd.to_numeric(df_all['Start Time'].dt.dayofweek, 
+    df_all['dayofweek'] = pd.to_numeric(df_all['Start Time'].dt.dayofweek,
                                       downcast='integer')
-    df_all['starthour'] = pd.to_numeric(df_all['Start Time'].dt.hour, 
+    df_all['starthour'] = pd.to_numeric(df_all['Start Time'].dt.hour,
                                       downcast='integer')
-    
+
     return df_all
     
 def time_station_stats(df):
     """Displays statistics on the most frequent times of travel.
-       Displays statistics on the most popular stations and trip."""
-    
+       Displays statistics on the most popular stations and trip.
+    """
+
     time_stat_list = [('month', dict_months, 'month'), 
                       ('dayofweek', dict_weekdays, 'day of week'), 
                       ('starthour', None, 'hour'),
@@ -314,7 +318,7 @@ def trip_duration_stats(df):
 
     print('\nCalculating Trip Duration...\n')
     start_time = time()
-    
+
     duration_sum = df['Trip Duration'].sum()
     duration_mean = int(df['Trip Duration'].mean())
     
@@ -433,14 +437,14 @@ def check_file_exists(file_loc):
     if not isfile(file_loc):
         print(f'ERROR - File not found: {file_loc}')
         exit(-1)
-    
+
 
 def main():
     print('Hello! Let\'s explore some US bikeshare data!')
     print('*'*50)
     print('prepare data')
     t0 = time()
-    
+
     if not isfile(db_file):
         df = prepare_dataframe(data_source)
         if 'pyarrow' in sys.modules.keys():
@@ -452,22 +456,22 @@ def main():
     else:
         df = pd.read_feather(db_file)
     calc_time(t0)
-    
+
     while True:
         filters = get_filters(test=False)
         df_filtered = load_data(df, filters)
         rows, cols = df_filtered.shape
-        
-        
+
+
         if len(df_filtered) > 0 and get_statistics:
             time_station_stats(df_filtered)
             trip_duration_stats(df_filtered)
             user_stats(df_filtered) 
         elif len(df_filtered) == 0:
             print(f'ERROR: no observations ROWS: {rows} / COLUMNS: {cols}')
-            
+
         print(f'Total observations: {rows}')
-        
+
         question_string = '\nWould you like to see the raw data?\n'
         if boolean_question(question_string):
             show_raw_data(df_filtered)
