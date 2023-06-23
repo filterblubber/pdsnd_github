@@ -123,6 +123,12 @@ def dict_question(data_dict):
 
 
 def calc_time(start_time):
+    """
+    Function for runtime time measurement.
+
+    Args:
+        start_time (float): It's the value of the time() function.
+    """
     duration = time() - start_time
     print(f"\nThis took {duration:.2F} seconds.")
 
@@ -155,8 +161,12 @@ def print_table(df, column):
 
 def display_duration(duration):
     """
-    Dispaly duration of bike rides.
+    Dispaly duration of bike rides for [years], days, hh:mm:ss.
+
+    Args:
+        duration (int): trip duration of bikes in seconds.
     """
+
     days_tmp, seconds = divmod(duration, 24*3600)
     years, days = divmod(days_tmp, 365)
     td_sum = timedelta(seconds=int(seconds))
@@ -173,10 +183,13 @@ def get_filters(test=False):
     """
     Asks user to specify a city, month, and day to analyze.
 
+    Args:
+        test (bool, optional): run function in testing mode. 
+            Does not require userinput. Defaults to False.
+
     Returns:
-        (str) city - name of the city to analyze
-        (str) month - name of the month to filter by, or "all" to apply no month filter
-        (str) day - name of the day of week to filter by, or "all" to apply no day filter
+        dict: returns a dictionary with a key for city, month and day
+            with a list of selected filters
     """
 
     if test:
@@ -198,18 +211,23 @@ def get_filters(test=False):
     return filter_dict
 
 
+
 def load_data(df, filter_dict):
     """
     Loads data for the specified city and filters by month and day if applicable.
 
+    initial task
+    (str) city - name of the city to analyze
+    (str) month - name of the month to filter by, or "all" to apply no month filter
+    (str) day - name of the day of week to filter by, or "all" to apply no day filter
+    
     Args:
-        (str) city - name of the city to analyze
-        (str) month - name of the month to filter by, or "all" to apply no month filter
-        (str) day - name of the day of week to filter by, or "all" to apply no day filter
+        filter_dict (dict): output dict from get_filter.    
+        
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-        
+ 
     result = list()
     for filter_key in ['month', 'dayofweek', 'City']:
         result_tmp = [(df[filter_key] == value).to_numpy() 
@@ -282,6 +300,7 @@ def prepare_dataframe(data_source):
                                       downcast='integer')
 
     return df_all
+
     
 def time_station_stats(df):
     """Displays statistics on the most frequent times of travel.
