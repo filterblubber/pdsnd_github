@@ -355,7 +355,7 @@ def trip_duration_stats(df):
     
 def catch_empty(input_list: list, pos: int):
     if len(input_list) > 0:
-        return input_list[0]
+        return input_list[pos]
     else:
         return -1
 
