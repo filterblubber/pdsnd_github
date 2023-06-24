@@ -354,6 +354,16 @@ def trip_duration_stats(df):
     print('*'*50)
     
 def catch_empty(input_list: list, pos: int):
+    """
+    How to deal with empty lists.
+
+    Args:
+        input_list (list): any list.
+        pos (int): _description_
+
+    Returns:
+        list or int: return list position or -1 if empty.
+    """
     if len(input_list) > 0:
         return input_list[0]
     else:
@@ -453,12 +463,21 @@ def show_raw_data(df_input, rows=5):
 
 
 def check_file_exists(file_loc):
+    """
+    Cheack for file existance.
+
+    Args:
+        file_loc (str): File location as string.
+    """
     if not isfile(file_loc):
         print(f'ERROR - File not found: {file_loc}')
         exit(-1)
 
 
 def main():
+    """
+    Main function.
+    """
     print('Hello! Let\'s explore some US bikeshare data!')
     print('*'*50)
     print('prepare data')
