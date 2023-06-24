@@ -94,7 +94,7 @@ def dict_question(data_dict):
     print('Example(1 2 45)')
     print(40*'-')
     keys = sorted(data_dict.keys())
-    while 1:    
+    while True:    
         for idx in keys:
             value = data_dict[idx][0]
             print(f'{idx}: {value}')
@@ -364,8 +364,8 @@ def catch_empty(input_list: list, pos: int):
     Returns:
         list or int: return list position or -1 if empty.
     """
-    if len(input_list) > 0:
-        return input_list[0]
+    if input_list:
+        return input_list[pos]
     else:
         return -1
 
@@ -429,7 +429,7 @@ def boolean_question(question_str):
         return yes or no as boolean.
 
     """
-    while 1:
+    while True:
         txt = input(f'{question_str} ([y]es/[n]o): ').lower().strip()[:200]
         if txt in ['yes', 'y']:
             print('The Answer is yes')
