@@ -15,6 +15,9 @@ from os.path import join, exists, splitext, isfile
 from os import listdir
 from datetime import timedelta
 
+# -----------------------------------------------------------------------------
+# config
+
 pd.set_option('display.max_columns', 20)
 
 CITY_DATA = { 'chicago': 'chicago.csv',
